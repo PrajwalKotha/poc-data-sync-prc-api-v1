@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd  http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config
+		name="data-sync-prc-api-v1-httpListenerConfig"
+		basePath="${http.basepath}">
+		<http:listener-connection host="${http.host}"
+			port="${http.port}" />
+	</http:listener-config>
+	<apikit:config name="data-sync-prc-api-v1-config"
+		api="resource::3c7350c8-9389-4d72-8fa0-3b40175e4190:data-sync-prc-api-v1:1.0.2:raml:zip:data-sync-prc-api-v1.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+	<db:config name="Database_Config" doc:name="Database Config"
+		doc:id="7b860e1a-8131-4abe-916f-ee047b34adce">
+		<db:my-sql-connection host="${mysql_db.host}"
+			port="${mysql_db.port}" user="${mysql_db.user}"
+			password="${mysql_db.password}" />
+	</db:config>
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="7e0108a3-75de-4541-a07e-3ad4c8d11a47"
+		file="config/${env}.yaml" />
+	<global-property doc:name="Global Property"
+		doc:id="28dc0e9e-ee46-4826-adfa-17cc4cd55059" name="env" value="test" />
+	<global-property doc:name="Global Property"
+		doc:id="fbef6026-e24a-47c4-a9e2-4ecf9d9b64b9" name="key"
+		value="MuleSoftTest2023" />
+	<secure-properties:config
+		name="Secure_Properties_Config" doc:name="Secure Properties Config"
+		doc:id="24d0ae40-d49d-42d1-91c0-049326e351af"
+		file="secureConfig/${env}.yaml" key="${key}" />
+	<vm:config name="VM_Config" doc:name="VM Config"
+		doc:id="1c9185e9-99aa-488c-a4ed-2a0dcbb1859d">
+		<vm:queues>
+			<vm:queue queueName="recurssiveQueue" />
+		</vm:queues>
+	</vm:config>
+
+</mule>

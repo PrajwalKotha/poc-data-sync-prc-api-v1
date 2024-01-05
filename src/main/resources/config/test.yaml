@@ -1,0 +1,29 @@
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  basepath: "/prc"
+  path: "/v1/*"
+
+mysql_db:
+  host: "localhost"
+  port: "3306"
+  user: "root"
+  password: "Test@123"
+
+OpenData:
+  url: "http://localhost:8082/sys/v1/covid?pageSize=50000&pageNumber=1"
+  method: "GET"
+  insert:
+    query: "INSERT INTO covid.opendata (`dateRep`,`day`,`month`,`year`,`cases`,`deaths`,`countriesAndTerritories`,`geoId`,`countryterritoryCode`,`popData2019`,`continentExp`,`Cumulative_number_for_14_days_of_COVID-19_cases_per_100000`,`External_Id__c`) VALUES(:dateRep,:day,:month,:year,:cases,:deaths,:countriesAndTerritories,:geoId,:countryterritoryCode,:popData2019,:continentExp,:Cumulative_number_for_14_days_of_COVID,:External_Id__c)"
+
+GitHubContent:
+  url: "http://localhost:8083/sys/v1/covid?pageSize=100000&pageNumber=1"
+  method: "GET"
+  insert:
+    query: "INSERT INTO `covid`.`githubcontent` (`date`, `county`, `state`, `fips`, `cases`, `deaths`, `External_Id__c`) VALUES (:date, :county, :state, :fips, :cases, :deaths, :External_Id__c)"
+  
+response:
+  timeOut: "6000000"
+number:
+  threads: "1"
+    
